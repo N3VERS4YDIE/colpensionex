@@ -47,7 +47,7 @@ def generate_caracterization() -> dict:
     return {
         "documento": random.randint(1_000_000_000, 9_999_999_999),
         "nombre_completo": fake.name(),
-        "caracterizacion": random.choice(["Inhailitar", "Embargar"]),
+        "caracterizacion": random.choice(["Inhabilitar", "Embargar"]),       
     }
 
 
