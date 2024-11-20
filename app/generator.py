@@ -16,7 +16,7 @@ def generate_entry_csvs():
 
 def _generate_entry_csvs(index: int):
     """Generates a single CSV file with 100 rows."""
-    ROWS = 1000
+    ROWS = 100
     solicitude_filename = (
         f"{SOLICITUDES_PATH}/Solicitudes {datetime.now()} ({index+1}).csv"
     )
@@ -57,7 +57,7 @@ def generate_solicitude() -> dict:
     }
 
 
-FILES = 10
+FILES = 1000
 CARACTERIZATIONS_PATH = "CaracterizacionesEntrantes"
 SOLICITUDES_PATH = "SolicitudesEntrantes"
 
