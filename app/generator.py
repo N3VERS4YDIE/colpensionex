@@ -8,7 +8,6 @@ from faker import Faker
 
 
 def generate_entry_csvs():
-    os.makedirs(CARACTERIZATIONS_PATH, exist_ok=True)
     os.makedirs(SOLICITUDES_PATH, exist_ok=True)
 
     with ProcessPoolExecutor() as executor:
@@ -18,23 +17,11 @@ def generate_entry_csvs():
 def _generate_entry_csvs(index: int):
     """Generates a single CSV file with 100 rows."""
     ROWS = 100
-    caracterizations_filename = (
-        f"{CARACTERIZATIONS_PATH}/Caracterizaciones {datetime.now()} ({index+1}).csv"
-    )
     solicitude_filename = (
         f"{SOLICITUDES_PATH}/Solicitudes {datetime.now()} ({index+1}).csv"
     )
 
-    caracterizations = tuple(generate_caracterization() for _ in range(ROWS + 1))
-    solicitudes = tuple(
-        {"documento": caracterization["documento"], **generate_solicitude()}
-        for caracterization in caracterizations
-    )
-
-    with open(caracterizations_filename, "w", encoding="utf-8") as f1:
-        writer = csv.DictWriter(f1, fieldnames=[*caracterizations[0].keys()])
-        writer.writeheader()
-        writer.writerows(caracterizations)
+    solicitudes = tuple(generate_solicitude() for _ in range(ROWS + 1))
 
     with open(solicitude_filename, "w", encoding="utf-8") as f2:
         writer2 = csv.DictWriter(f2, fieldnames=[*solicitudes[0].keys()])
@@ -42,19 +29,13 @@ def _generate_entry_csvs(index: int):
         writer2.writerows(solicitudes)
 
 
-def generate_caracterization() -> dict:
-    """Generates a single row for the caracterization CSV file."""
-    return {
-        "documento": random.randint(1_000_000_000, 9_999_999_999),
-        "nombre_completo": fake.name(),
-        "caracterizacion": random.choice(["Inhabilitar", "Embargar"]),       
-    }
-
-
 def generate_solicitude() -> dict:
     """Generates a single row for the solicitude CSV file."""
 
     return {
+        "documento": random.randint(1_000_000_000, 9_999_999_999),
+        "nombre_completo": fake.name(),
+        "caracterizacion": random.choice(["Inhabilitar", "Embargar"]),
         "estado_solicitud": "Generada",
         "es_pre_pensionado": random.randint(0, 1),
         "lugar_nacimiento": random.choice(cities),
@@ -76,7 +57,7 @@ def generate_solicitude() -> dict:
     }
 
 
-FILES = 10
+FILES = 1000
 CARACTERIZATIONS_PATH = "CaracterizacionesEntrantes"
 SOLICITUDES_PATH = "SolicitudesEntrantes"
 
